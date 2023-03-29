@@ -115,7 +115,7 @@ func (w *Watcher) fdSelect() {
 	}
 	fdset := w.fds.FdSet()
 	changed, err := doSelect(int(w.fds[0])+1, nil, nil, fdset, timeval)
-	if err != nil {
+	if err != nil && err != syscall.EINTR {
 		fmt.Printf("failed to call syscall.Select, %s", err)
 		os.Exit(1)
 	}
