@@ -40,13 +40,13 @@ const (
 func exportGPIO(p Pin) {
 	export, err := os.OpenFile("/sys/class/gpio/export", os.O_WRONLY, 0600)
 	if err != nil {
-		fmt.Printf("failed to open gpio export file for writing for %d\n", p.Number)
+		fmt.Fprintf(os.Stderr, "failed to open gpio export file for writing for %d: %v\n", p.Number, err)
 		os.Exit(1)
 	}
 	defer export.Close()
 	_, err = export.Write([]byte(strconv.Itoa(int(p.Number))))
 	if err != nil {
-		fmt.Printf("failed to write %d to gpio export file\n", p.Number)
+		fmt.Fprintf(os.Stderr, "failed to write %d to gpio export file: %v\n", p.Number, err)
 		os.Exit(1)
 	}
 }
